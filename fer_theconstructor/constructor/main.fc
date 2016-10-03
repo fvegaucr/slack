@@ -1,0 +1,16 @@
+{ 
+  "constructor" : [ 
+    { 
+       "package": "apache2",
+       "action" : "install",
+       "host" : "52.91.173.249",
+       "notify": "yes"
+    },
+    { 
+      "package": "php5",
+      "action": "install",
+      "host": "52.91.173.249",
+      "notify": "yes"
+    }
+  ]
+}

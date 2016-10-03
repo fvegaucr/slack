@@ -1,0 +1,252 @@
+A - Check nslookup to double check how the address resolves 
+
+BribriMackPro:slack fvega$ nslookup 52.91.173.249
+Server:        75.75.75.75
+Address:           75.75.75.75#53
+
+Non-authoritative answer:
+249.173.91.52.in-addr.arpa         name = ec2-52-91-173-249.compute-1.amazonaws.com.
+
+Authoritative answers can be found from:
+
+B - Ping the address to determine if it was reachable.
+
+BribriMackPro:slack fvega$ ping 52.91.173.249
+PING 52.91.173.249 (52.91.173.249): 56 data bytes
+Request timeout for icmp_seq 0
+Request timeout for icmp_seq 1
+Request timeout for icmp_seq 2
+^C
+--- 52.91.173.249 ping statistics ---
+4 packets transmitted, 0 packets received, 100.0% packet loss
+
+C - Run nmap to find out if the ip was up or which ports were opened
+
+BribriMackPro:slack fvega$ sudo nmap -Pn 52.91.173.249
+Password:
+
+Starting Nmap 7.01 ( https://nmap.org ) at 2016-09-30 18:27 PDT
+Nmap scan report for ec2-52-91-173-249.compute-1.amazonaws.com (52.91.173.249)
+Host is up (0.092s latency).
+Not shown: 999 filtered ports
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap done: 1 IP address (1 host up) scanned in 11.33 seconds
+
+
+D- Attempt ssh the IP using -vvv flag to find out if there were any problem trying to login into the machine
+
+BribriMackPro:slack fvega$ ssh -vvv root@52.91.173.249
+OpenSSH_6.9p1, LibreSSL 2.1.8
+debug1: Reading configuration data /etc/ssh/ssh_config
+debug1: /etc/ssh/ssh_config line 20: Applying options for *
+debug1: /etc/ssh/ssh_config line 53: Applying options for *
+debug2: ssh_connect: needpriv 0
+debug1: Connecting to 52.91.173.249 [52.91.173.249] port 22.
+debug1: Connection established.
+debug1: identity file /Users/fvega/.ssh/id_rsa type 1
+debug1: key_load_public: No such file or directory
+debug1: identity file /Users/fvega/.ssh/id_rsa-cert type -1
+debug1: key_load_public: No such file or directory
+debug1: identity file /Users/fvega/.ssh/id_dsa type -1
+debug1: key_load_public: No such file or directory
+debug1: identity file /Users/fvega/.ssh/id_dsa-cert type -1
+debug1: key_load_public: No such file or directory
+debug1: identity file /Users/fvega/.ssh/id_ecdsa type -1
+debug1: key_load_public: No such file or directory
+debug1: identity file /Users/fvega/.ssh/id_ecdsa-cert type -1
+debug1: key_load_public: No such file or directory
+debug1: identity file /Users/fvega/.ssh/id_ed25519 type -1
+debug1: key_load_public: No such file or directory
+debug1: identity file /Users/fvega/.ssh/id_ed25519-cert type -1
+debug1: Enabling compatibility mode for protocol 2.0
+debug1: Local version string SSH-2.0-OpenSSH_6.9
+debug1: Remote protocol version 2.0, remote software version OpenSSH_6.6.1p1 Ubuntu-2ubuntu2.7
+debug1: match: OpenSSH_6.6.1p1 Ubuntu-2ubuntu2.7 pat OpenSSH_6.6.1* compat 0x04000000
+debug2: fd 3 setting O_NONBLOCK
+debug1: Authenticating to 52.91.173.249:22 as 'root'
+debug3: hostkeys_foreach: reading file "/Users/fvega/.ssh/known_hosts"
+debug3: record_hostkey: found key type ECDSA in file /Users/fvega/.ssh/known_hosts:3
+debug3: load_hostkeys: loaded 1 keys from 52.91.173.249
+debug3: order_hostkeyalgs: prefer hostkeyalgs: ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp384-cert-v01@openssh.com,ecdsa-sha2-nistp521-cert-v01@openssh.com,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521
+debug1: SSH2_MSG_KEXINIT sent
+debug1: SSH2_MSG_KEXINIT received
+debug2: kex_parse_kexinit: curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
+debug2: kex_parse_kexinit: ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp384-cert-v01@openssh.com,ecdsa-sha2-nistp521-cert-v01@openssh.com,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ssh-dss-cert-v01@openssh.com,ssh-rsa-cert-v00@openssh.com,ssh-dss-cert-v00@openssh.com,ssh-ed25519,ssh-rsa,ssh-dss
+debug2: kex_parse_kexinit: chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com,arcfour256,arcfour128,aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,aes192-cbc,aes256-cbc,arcfour,rijndael-cbc@lysator.liu.se
+debug2: kex_parse_kexinit: chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com,arcfour256,arcfour128,aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,aes192-cbc,aes256-cbc,arcfour,rijndael-cbc@lysator.liu.se
+debug2: kex_parse_kexinit: umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha1-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512,hmac-sha1,hmac-md5-etm@openssh.com,hmac-ripemd160-etm@openssh.com,hmac-sha1-96-etm@openssh.com,hmac-md5-96-etm@openssh.com,hmac-md5,hmac-ripemd160,hmac-ripemd160@openssh.com,hmac-sha1-96,hmac-md5-96
+debug2: kex_parse_kexinit: umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha1-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512,hmac-sha1,hmac-md5-etm@openssh.com,hmac-ripemd160-etm@openssh.com,hmac-sha1-96-etm@openssh.com,hmac-md5-96-etm@openssh.com,hmac-md5,hmac-ripemd160,hmac-ripemd160@openssh.com,hmac-sha1-96,hmac-md5-96
+debug2: kex_parse_kexinit: none,zlib@openssh.com,zlib
+debug2: kex_parse_kexinit: none,zlib@openssh.com,zlib
+debug2: kex_parse_kexinit:
+debug2: kex_parse_kexinit:
+debug2: kex_parse_kexinit: first_kex_follows 0
+debug2: kex_parse_kexinit: reserved 0
+debug2: kex_parse_kexinit: curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
+debug2: kex_parse_kexinit: ssh-rsa,ssh-dss,ecdsa-sha2-nistp256,ssh-ed25519
+debug2: kex_parse_kexinit: aes128-ctr,aes192-ctr,aes256-ctr,arcfour256,arcfour128,aes128-gcm@openssh.com,aes256-gcm@openssh.com,chacha20-poly1305@openssh.com,aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,aes192-cbc,aes256-cbc,arcfour,rijndael-cbc@lysator.liu.se
+debug2: kex_parse_kexinit: aes128-ctr,aes192-ctr,aes256-ctr,arcfour256,arcfour128,aes128-gcm@openssh.com,aes256-gcm@openssh.com,chacha20-poly1305@openssh.com,aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,aes192-cbc,aes256-cbc,arcfour,rijndael-cbc@lysator.liu.se
+debug2: kex_parse_kexinit: hmac-md5-etm@openssh.com,hmac-sha1-etm@openssh.com,umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-ripemd160-etm@openssh.com,hmac-sha1-96-etm@openssh.com,hmac-md5-96-etm@openssh.com,hmac-md5,hmac-sha1,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512,hmac-ripemd160,hmac-ripemd160@openssh.com,hmac-sha1-96,hmac-md5-96
+debug2: kex_parse_kexinit: hmac-md5-etm@openssh.com,hmac-sha1-etm@openssh.com,umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-ripemd160-etm@openssh.com,hmac-sha1-96-etm@openssh.com,hmac-md5-96-etm@openssh.com,hmac-md5,hmac-sha1,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512,hmac-ripemd160,hmac-ripemd160@openssh.com,hmac-sha1-96,hmac-md5-96
+debug2: kex_parse_kexinit: none,zlib@openssh.com
+debug2: kex_parse_kexinit: none,zlib@openssh.com
+debug2: kex_parse_kexinit:
+debug2: kex_parse_kexinit:
+debug2: kex_parse_kexinit: first_kex_follows 0
+debug2: kex_parse_kexinit: reserved 0
+debug1: kex: server->client chacha20-poly1305@openssh.com <implicit> none
+debug1: kex: client->server chacha20-poly1305@openssh.com <implicit> none
+debug1: expecting SSH2_MSG_KEX_ECDH_REPLY
+debug1: Server host key: ecdsa-sha2-nistp256 SHA256:4Vp/TdJESge0yocqP/mf2xNFJ7GWA31LneEYdmhC4Xw
+debug3: hostkeys_foreach: reading file "/Users/fvega/.ssh/known_hosts"
+debug3: record_hostkey: found key type ECDSA in file /Users/fvega/.ssh/known_hosts:3
+debug3: load_hostkeys: loaded 1 keys from 52.91.173.249
+debug1: Host '52.91.173.249' is known and matches the ECDSA host key.
+debug1: Found key in /Users/fvega/.ssh/known_hosts:3
+debug2: set_newkeys: mode 1
+debug1: SSH2_MSG_NEWKEYS sent
+debug1: expecting SSH2_MSG_NEWKEYS
+debug2: set_newkeys: mode 0
+debug1: SSH2_MSG_NEWKEYS received
+debug1: SSH2_MSG_SERVICE_REQUEST sent
+debug2: service_accept: ssh-userauth
+debug1: SSH2_MSG_SERVICE_ACCEPT received
+debug2: key: /Users/fvega/.ssh/id_rsa (0x7ff49b514970),
+debug2: key: /Users/fvega/.ssh/id_dsa (0x0),
+debug2: key: /Users/fvega/.ssh/id_ecdsa (0x0),
+debug2: key: /Users/fvega/.ssh/id_ed25519 (0x0),
+debug1: Authentications that can continue: publickey,password
+debug3: start over, passed a different list publickey,password
+debug3: preferred publickey,keyboard-interactive,password
+debug3: authmethod_lookup publickey
+debug3: remaining preferred: keyboard-interactive,password
+debug3: authmethod_is_enabled publickey
+debug1: Next authentication method: publickey
+debug1: Offering RSA public key: /Users/fvega/.ssh/id_rsa
+debug3: send_pubkey_test
+debug2: we sent a publickey packet, wait for reply
+debug1: Authentications that can continue: publickey,password
+debug1: Trying private key: /Users/fvega/.ssh/id_dsa
+debug3: no such identity: /Users/fvega/.ssh/id_dsa: No such file or directory
+debug1: Trying private key: /Users/fvega/.ssh/id_ecdsa
+debug3: no such identity: /Users/fvega/.ssh/id_ecdsa: No such file or directory
+debug1: Trying private key: /Users/fvega/.ssh/id_ed25519
+debug3: no such identity: /Users/fvega/.ssh/id_ed25519: No such file or directory
+debug2: we did not send a packet, disable method
+debug3: authmethod_lookup password
+debug3: remaining preferred: ,password
+debug3: authmethod_is_enabled password
+debug1: Next authentication method: password
+root@52.91.173.249's password:
+
+BribriMackPro:slack fvega$
+
+E- Once the access was granted I check what services were running:
+root@ip-172-31-255-92:~# service --status-all
+ [ + ]  acpid
+ [ + ]  apparmor
+ [ ? ]  apport
+ [ + ]  atd
+ [ ? ]  console-setup
+ [ + ]  cron
+ [ ? ]  cryptdisks
+ [ ? ]  cryptdisks-early
+ [ - ]  dbus
+ [ ? ]  dns-clean
+ [ + ]  friendly-recovery
+ [ - ]  grub-common
+ [ ? ]  irqbalance
+ [ ? ]  killprocs
+ [ ? ]  kmod
+ [ - ]  landscape-client
+ [ ? ]  networking
+ [ ? ]  ondemand
+ [ ? ]  open-vm-tools
+ [ ? ]  pppd-dns
+ [ + ]  procps
+ [ ? ]  rc.local
+ [ + ]  resolvconf
+ [ - ]  rsync
+ [ + ]  rsyslog
+ [ ? ]  screen-cleanup
+ [ ? ]  sendsigs
+ [ + ]  ssh
+ [ - ]  sudo
+ [ + ]  udev
+ [ ? ]  umountfs
+ [ ? ]  umountnfs.sh
+ [ ? ]  umountroot
+ [ - ]  unattended-upgrades
+ [ - ]  urandom
+
+
+
+F- attempt to run apt-get install, and I got the following error
+
+Run apt-get check to find out for any dependency that could be broken, and found about that error
+
+root@ip-172-31-255-92:~# apt-get check
+Reading package lists... Error!
+E: Write error - write (28: No space left on device)
+E: Can't mmap an empty file
+E: Failed to truncate file - ftruncate (9: Bad file descriptor)
+E: The package lists or status file could not be parsed or opened.
+
+G- then check the disk space 
+
+root@ip-172-31-255-92:/etc/ssh# df -h
+Filesystem      Size  Used Avail Use% Mounted on
+udev            240M   12K  240M   1% /dev
+tmpfs            49M  340K   49M   1% /run
+/dev/xvda1      7.8G  7.8G     0 100% /
+none            4.0K     0  4.0K   0% /sys/fs/cgroup
+none            5.0M     0  5.0M   0% /run/lock
+none            245M     0  245M   0% /run/shm
+none            100M     0  100M   0% /run/user
+
+Noticed /dev/xvda1      7.8G  7.8G     0 100% /
+
+H- Checking where the space is being use
+
+root@ip-172-31-255-92:/# du -sxh --exclude='/proc' --exclude='proc' /*
+9.6M       /bin
+25M        /boot
+12K        /dev
+5.0M       /etc
+32K        /home
+0          /initrd.img
+61M        /lib
+4.0K       /lib64
+16K        /lost+found
+4.0K       /media
+4.0K       /mnt
+4.0K       /opt
+16K        /root
+340K       /run
+9.4M       /sbin
+4.0K       /srv
+0          /sys
+4.0K       /tmp
+506M       /usr
+185M       /var
+0          /vmlinuz
+
+I - I notice also that pinging hosts like google.com didn’t return the echo reply
+ 
+so check /etc/resolv.conf ==> this one added google dos 8.8.8.8
+/etc/hosts ==> looked good too
+/etc/hostname  ==> This one was ok
+
+J- The space usage had to research due to du -sh didn’t exactly told me where was all that space being used so I run
+
+lsof -nP | grep '(deleted)'  
+
+ 
+and remove the the file listed
+ /tmp/tmp.2rKU1QSG1f
+
+k- changed the ssh config to use ssh-key authentication instead of password authentication, more secure and it will help the tool access without the use of password or prompting me to type a password
+
+
